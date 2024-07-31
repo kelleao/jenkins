@@ -4,7 +4,7 @@ pipeline {
         CC = 'clang'
     }
      options {
-        buildDiscarder(10)
+        buildDiscarder(logRotator(numToKeepStr: '10'))
         timeout(30) 
     }
         stages {
