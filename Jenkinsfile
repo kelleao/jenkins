@@ -9,7 +9,7 @@ pipeline {
                     JAVA_HOME = '%JAVA_HOME%\bin'
                 }
                 steps {
-                    echo 'Building'
+                     bat 'echo "java ambiente is $JAVA_HOME"'
                 }
         }
     }
