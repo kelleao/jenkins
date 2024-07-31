@@ -1,5 +1,5 @@
 pipeline {
-    agent any | windows
+    agent any 
     environment { 
         CC = 'clang'
     }
