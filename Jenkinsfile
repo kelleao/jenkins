@@ -1,7 +1,9 @@
 pipeline {
-    agent any 
+    agent any | label: "Windoms"
+
     environment { 
-        CC = 'clang'
+       JAVA_HOME = '%JAVA_HOME%\bin'
+       JENKINS_URL = 'http://localhost:8080/'
     }
      options {
         buildDiscarder(logRotator(numToKeepStr: '1'))
@@ -9,13 +11,28 @@ pipeline {
     }
         stages {
             stage('Build') {
-                environment {
-                    JAVA_HOME = '%JAVA_HOME%\bin'
-                    JENKINS_URL = 'http://localhost:8080/'
-                }
                 steps {
-                     bat 'echo "java ambiente is $JAVA_HOME"'
+                    bat 'echo "java ambiente is ${JAVA_HOME}"'
+                    bat 'echo "Acesso URL is ${JENKINS_URL}"'
                 }
+        }
+         stage('Test') {
+            parameters {
+            booleanParam( name: 'RUN_WINDOWS' )
+        }
+            steps {
+               parallel {
+                stage('Windows') {
+                    when {
+                        expression { return params.RUN_WINDOWS }
+                    }
+                    stages {
+                        stage('Test Windows') {
+                            ...
+                        }
+                    }
+                }
+            }
         }
     }
 }
