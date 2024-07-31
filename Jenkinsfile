@@ -1,5 +1,5 @@
 pipeline {
-    agent any | label: Windoms
+    agent any
 
     environment { 
        JAVA_HOME = '%JAVA_HOME%\bin'
