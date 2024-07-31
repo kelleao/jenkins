@@ -26,11 +26,7 @@ pipeline {
                     when {
                         expression { return params.RUN_WINDOWS }
                     }
-                    stages {
-                        stage('Test Windows') {
-                            ...
-                        }
-                    }
+                    
                 }
             }
         }
