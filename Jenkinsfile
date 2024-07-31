@@ -9,7 +9,6 @@ pipeline {
                     JAVA_HOME = '%JAVA_HOME%\bin'
                 }
                 steps {
-                    bat 'windows'
                     echo 'Building'
                 }
         }
