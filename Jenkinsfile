@@ -3,6 +3,10 @@ pipeline {
     environment { 
         CC = 'clang'
     }
+     options {
+        buildDiscarder(10)
+        timeout(30) 
+    }
         stages {
             stage('Build') {
                 environment {
