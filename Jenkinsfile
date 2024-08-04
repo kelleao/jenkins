@@ -32,15 +32,14 @@ pipeline {
 
             stage('Test') {
                 steps {
-                    bat 'make'
+                    sh 'make'
                 }
             }
-            stage('Deploy') {
-                steps {
-                  
-                  echo 'Deploying....'
+           stage('Deploy') {
+            steps {
+                echo 'Deploying....'
             }
-        } 
+        }
             
     }
 }
