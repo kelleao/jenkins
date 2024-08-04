@@ -54,7 +54,7 @@ pipeline {
                     echo 'I will always say Hello again!'
                 }
                 failure {
-                mail to: team@example.com, subject: 'The Pipeline failed :('
+                echo 'The Pipeline failed'
             }
             success {
                 echo 'I will sucess say Hello again!'
