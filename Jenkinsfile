@@ -8,16 +8,13 @@ pipeline {
         //GIT_HUB_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
     }
     
-    options{
-
-    }
-    parameters {
-        string(name: 'STATEMENT', defaultValue: 'hello; ls /', description: 'What should I say?')
-    }
+    // parameters {
+    //     string(name: 'STATEMENT', defaultValue: 'hello; ls /', description: 'What should I say?')
+    // }
         stages {
             stage('Build') {
                 steps {
-                 echo "git branch: 'main', url: "${env.GIT_URL}" "
+                 echo '"git branch: \'main\', url: "${env.GIT_URL}" "'
                 }
         }
             
