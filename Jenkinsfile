@@ -38,28 +38,14 @@ pipeline {
             }
             stage('Deploy') {
                 steps {
-                    environment { 
-                     SERVICE_CREDS = credentials('my-predefined-username-password') 
-                }
-                    steps {
-                        bat 'echo "Service user is $SERVICE_CREDS_USR"'
-                        bat 'echo "Service password is $SERVICE_CREDS_PSW"'
-                    }
-                    
-                }
+                  
+                  
             }
-
-            post { 
+        }
+        post { 
                 always { 
                     echo 'I will always say Hello again!'
                 }
-                failure {
-                echo 'The Pipeline failed'
-            }
-            success {
-                echo 'I will sucess say Hello again!'
-            }
-        }
                 
     }
         
