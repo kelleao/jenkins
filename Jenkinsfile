@@ -10,7 +10,7 @@ pipeline {
     skipDefaultCheckout()
     }
     parameters {
-        string(name: 'GIT_URL', defaultValue: "main", , description: 'Github URL')
+        string(name: 'GIT_URL', defaultValue: "https://github.com", , description: 'Acesso do Github URL no branch')
     }
         stages {
             stage('Build Git-URL') {
@@ -22,6 +22,12 @@ pipeline {
         stage('Parameters Git repositorio') {
                 steps {
                      git branch: 'main', url: "${params.GIT_URL}"
+                     echo "${params.URL}"
+                }
+        }
+        stage('Acesso Git repositorio') {
+                steps {
+                     echo "${params.URL}"
                 }
         }
             
