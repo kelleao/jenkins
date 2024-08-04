@@ -10,7 +10,7 @@ pipeline {
     skipDefaultCheckout()
     }
     parameters {
-        string(name: 'Kelleao', defaultValue: '${env.GIT_URL}', description: 'Acesso o Git no repositório?')
+        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'BRANCH', type: 'PT_BRANCH'
     }
         stages {
             stage('Pré-Build Git-URL') {
@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Parameters Git repositorio') {
                 steps {
-                     git branch: 'main', url: "${params.GIT_URL}"
+                     git branch: "${params.BRANCH}", url: '${env.GIT_URL}'
                 }
         }
             
