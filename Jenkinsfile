@@ -14,8 +14,11 @@ pipeline {
         stages {
             stage('Build Git-URL') {
                 steps {
-                 bat ' \'"git branch: \\\'main\\\', url: "${env.GIT_URL}" "\''
-                 echo 'Git URl'
+                    git branch: 'main', url: "${env.GIT_URL}"
+                 
+                }
+                steps{
+                    echo 'Git URl'
                 }
         }
             
