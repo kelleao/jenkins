@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment { 
-       GIT_URL = 'https://github.com/kelleao/jenkins'
+       url = 'https://github.com/kelleao/jenkins'
     }
     
 
         stages {
             stage('Build') {
                 steps {
-                  bat 'GIT_URL'
+                  bat 'bat \'url\''
                 }
         }
             
