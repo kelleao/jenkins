@@ -6,7 +6,7 @@ pipeline {
         //GIT_URL with  <user_login>:<password>
     }
      options {
-        buildDiscarder(3)
+        buildDiscarder(logRotator(numToKeepStr: '1'))
         timeout(30)
     }
     parameters {
