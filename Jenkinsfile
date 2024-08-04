@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label: windows
-    }
+    agent any
 
     environment { 
       GIT_URL = 'https://github.com/kelleao/jenkins'
@@ -34,7 +32,7 @@ pipeline {
 
             stage('Test') {
                 steps {
-                   bat 'make'
+                   bat 'whoami'
                 }
             }
             
