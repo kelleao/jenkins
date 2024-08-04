@@ -3,12 +3,12 @@ pipeline {
 
     environment { 
       GIT_URL = 'https://github.com/kelleao/jenkins'
-        //GIT_HUB with  <kelleao>:<password>
-        
+        GIT_URL with  <user_login>:<password>
     }
-    //  options {
-    //     timeout(time: 1, unit: 'SECONDS')
-    // }
+     options {
+        buildDiscarter(10)
+        timeout(30)
+    }
     parameters {
         string(name: 'GIT_URL', defaultValue: "https://github.com/kelleao/jenkins.git", , description: 'Acesso do Github URL no branch')
     }
