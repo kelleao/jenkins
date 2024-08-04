@@ -3,24 +3,33 @@ pipeline {
 
     environment { 
       GIT_URL = 'https://github.com/kelleao/jenkins'
-        //GIT_HUB with  <username>:<password>
-        //GIT_HUB_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
-        //GIT_HUB_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+        //GIT_HUB with  <kelleao>:<password>
+        
     }
-    
-    // parameters {
-    //     string(name: 'STATEMENT', defaultValue: 'hello; ls /', description: 'What should I say?')
-    // }
+     options {
+    skipDefaultCheckout()
+    }
+    parameters {
+        string(name: 'Kelleao', defaultValue: '${env.GIT_URL}', description: 'Acesso o Git no repositório?')
+    }
         stages {
-            stage('Build Git-URL') {
+            stage('Pré-Build Git-URL') {
                 steps {
                     git branch: 'main', url: "${env.GIT_URL}"
                     echo 'Git URl'
                 }
         }
+        stage('Parameters Git repositorio') {
+                steps {
+                     git branch: 'main', url: "${params.GIT_URL}"
+                }
+        }
             
     }
-   
+        
+            
 }
+   
+
 
 
