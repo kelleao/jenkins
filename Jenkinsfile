@@ -12,9 +12,10 @@ pipeline {
     //     string(name: 'STATEMENT', defaultValue: 'hello; ls /', description: 'What should I say?')
     // }
         stages {
-            stage('Build') {
+            stage('Build Git-URL') {
                 steps {
-                 echo '"git branch: \'main\', url: "${env.GIT_URL}" "'
+                 bat ' \'"git branch: \\\'main\\\', url: "${env.GIT_URL}" "\''
+                 echo 'Git URl'
                 }
         }
             
