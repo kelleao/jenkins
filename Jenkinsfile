@@ -2,18 +2,13 @@ pipeline {
     agent any
 
     environment { 
-       JAVA_HOME = '%JAVA_HOME%\bin'
-       JENKINS_URL = 'http://localhost:8080/'
+       GIT_URL = 'https://github.com/kelleao/jenkins'
     }
-     options {
-        buildDiscarder(logRotator(numToKeepStr: '1'))
-        timeout(10) 
-    }
+
         stages {
             stage('Build') {
                 steps {
-                    bat 'echo "java ambiente is ${JAVA_HOME}"'
-                    bat 'echo "Acesso URL is ${JENKINS_URL}"'
+                   git branch: 'main' URL: '${GIT_URL}'
                 }
         }
             stage('Test') {
