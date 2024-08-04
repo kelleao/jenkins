@@ -10,7 +10,7 @@ pipeline {
     skipDefaultCheckout()
     }
     parameters {
-        string(name: 'GIT_URL', defaultValue: "GIT_URL", , description: 'Acesso do Github URL no branch')
+        string(name: 'GIT_URL', defaultValue: "https://github.com/kelleao/jenkins.git", , description: 'Acesso do Github URL no branch')
     }
         stages {
             stage('Build Git-URL') {
