@@ -9,12 +9,7 @@ pipeline {
         stages {
             stage('Build') {
                 steps {
-                  checkout scmGit(branches: [[name: 'main']], 
-                    browser: github('${GIT_URL}'), 
-                    extensions: [cloneOption(honorRefspec: true, 
-                    noTags: true, reference: '', shallow: false), lfs(), 
-                    localBranch('main')], 
-                    userRemoteConfigs: [[url: '${GIT_URL}']])
+                 git branch: 'main', credentialsId: '7fd00f8d-feec-43f5-a65e-4cd72c90262c', url: '${env.GIT_URL}'
                 }
         }
             
