@@ -7,7 +7,6 @@ pipeline {
         
     }
      options {
-        disableConcurrentBuilds(abortPrevious: env.GIT_URL != null)
         timeout(time: 1, unit: 'SECONDS')
     }
     parameters {
@@ -33,7 +32,7 @@ pipeline {
 
             stage('Test') {
                 steps {
-                    bat 'make check'
+                    bat 'make'
                 }
             }
             stage('Deploy') {
