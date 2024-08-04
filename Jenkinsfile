@@ -6,7 +6,7 @@ pipeline {
         //GIT_URL with  <user_login>:<password>
     }
      options {
-        buildDiscarter(10)
+        buildDiscarder(3)
         timeout(30)
     }
     parameters {
