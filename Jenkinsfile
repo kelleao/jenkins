@@ -4,17 +4,14 @@ pipeline {
     environment { 
        GIT_URL = 'https://github.com/kelleao/jenkins'
     }
+    
 
         stages {
             stage('Build') {
                 steps {
-                   git branch: 'main', url: '${GIT_URL}'
+                   git branch: 'main', url: '${env.GIT_URL}'
                 }
         }
-            stage('Test') {
-                steps {
-                    echo 'Testing..'
-                }
-            }
+            
     }
 }
