@@ -32,14 +32,9 @@ pipeline {
 
             stage('Test') {
                 steps {
-                    sh 'make'
+                   bat 'sh\'make\''
                 }
             }
-           stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
             
     }
 }
