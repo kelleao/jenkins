@@ -10,10 +10,10 @@ pipeline {
     skipDefaultCheckout()
     }
     parameters {
-        gitParameter defaultValue: 'main', name: 'BRANCH'
+        string(name: 'GIT_URL', defaultValue: "main", , description: 'Github URL')
     }
         stages {
-            stage('Pre-Build Git-URL') {
+            stage('Build Git-URL') {
                 steps {
                     git branch: 'main', url: "${env.GIT_URL}"
                     echo 'Git URl'
@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Parameters Git repositorio') {
                 steps {
-                     git branch: "${params.BRANCH}", url: 'https://github.com/kelleao/jenkins.git'
+                     git branch: 'main', url: "${params.GIT_URL}"
                 }
         }
             
