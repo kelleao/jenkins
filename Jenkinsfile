@@ -15,9 +15,6 @@ pipeline {
             stage('Build Git-URL') {
                 steps {
                     git branch: 'main', url: "${env.GIT_URL}"
-                 
-                }
-                steps{
                     echo 'Git URl'
                 }
         }
