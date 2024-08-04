@@ -9,7 +9,7 @@ pipeline {
         stages {
             stage('Build') {
                 steps {
-                  GIT_URL = '${GIT_URL}'
+                  bat 'GIT_URL'
                 }
         }
             
