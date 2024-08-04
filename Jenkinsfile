@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment { 
-       URL = 'https://github.com/kelleao/jenkins'
+       JENKINS_URL = 'https://github.com/kelleao/jenkins'
     }
     
 
         stages {
             stage('Build') {
                 steps {
-                  git branch: 'main', url: "${env.URL}" 
+                  git branch: 'main', url: "${env.JENKINS_URL}" 
                 }
         }
             
