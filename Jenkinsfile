@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Acesso Git repositorio') {
                 steps {
-                     echo "${params.URL}"
+                     echo "${params.GIT_URL}"
                 }
         }
             
