@@ -8,7 +8,7 @@ pipeline {
         stages {
             stage('Build') {
                 steps {
-                   git branch: 'main' URL: '${GIT_URL}'
+                   git branch: 'main', URL: '${GIT_URL}'
                 }
         }
             stage('Test') {
