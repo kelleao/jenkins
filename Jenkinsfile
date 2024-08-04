@@ -9,7 +9,7 @@ pipeline {
         stages {
             stage('Build') {
                 steps {
-                  git branch: 'main', url: "${URL}"
+                  git branch: 'main', url: "${env.URL}" 
                 }
         }
             
