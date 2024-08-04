@@ -13,7 +13,7 @@ pipeline {
         gitParameter branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'BRANCH', type: 'PT_BRANCH'
     }
         stages {
-            stage('Pré-Build Git-URL') {
+            stage('Pre-Build Git-URL') {
                 steps {
                     git branch: 'main', url: "${env.GIT_URL}"
                     echo 'Git URl'
@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Parameters Git repositorio') {
                 steps {
-                     git branch: "${params.BRANCH}", url: '${env.GIT_URL}'
+                     git branch: "${params.BRANCH}", url: 'https://github.com/kelleao/jenkins'
                 }
         }
             
