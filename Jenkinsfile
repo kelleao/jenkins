@@ -6,9 +6,9 @@ pipeline {
         //GIT_HUB with  <kelleao>:<password>
         
     }
-     options {
-        timeout(time: 1, unit: 'SECONDS')
-    }
+    //  options {
+    //     timeout(time: 1, unit: 'SECONDS')
+    // }
     parameters {
         string(name: 'GIT_URL', defaultValue: "https://github.com/kelleao/jenkins.git", , description: 'Acesso do Github URL no branch')
     }
