@@ -3,7 +3,7 @@ pipeline {
 
     environment { 
       GIT_URL = 'https://github.com/kelleao/jenkins'
-        GIT_URL with  <user_login>:<password>
+        //GIT_URL with  <user_login>:<password>
     }
      options {
         buildDiscarter(10)
