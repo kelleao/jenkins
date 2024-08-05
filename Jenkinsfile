@@ -3,14 +3,18 @@ pipeline {
 
     environment { 
       GIT_URL = 'https://github.com/kelleao/jenkins'
-        //GIT_URL with  <user_login>:<password>
+      CREDS = credentials('USER_TEST')
     }
      options {
         buildDiscarder(logRotator(numToKeepStr: '1'))
         timeout(30)
     }
-    parameters {
-        string(name: 'GIT_URL', defaultValue: "https://github.com/kelleao/jenkins.git", , description: 'Acesso do Github URL no branch')
+     parameters {
+        credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', 
+        defaultValue: 'USER_LOGIN', 
+        description: 'Meu usuario e senha acessa github.', 
+        name: 'USER_LOGIN', 
+        required: true
     }
 
     // triggers {
@@ -23,30 +27,18 @@ pipeline {
                     echo 'Git URl'
                 }
         }
-            stage('Parameters Git repositorio') {
+            stage('Parameters credenciais') {
                     steps {
-                        git branch: 'main', url: "${params.GIT_URL}"
+                        git branch: 'main', url: "${params.USER_LOGIN}"
                     }
             }
-            stage('Acesso Git repositorio') {
-                    steps {
-                        echo "${params.GIT_URL}"
-                    }
+            stage('Credenciais my usr e psw') {
+                 bat 'echo meu user ${CREDS_USR}'
+                 bat 'echo minha senha ${CREDS_PSW}'
             }
-
+            
             stage('Test') {
-                input{
-                    message "Devemos continuar"
-                    ok "Yes, dever."
-                    submitter "raquel, leao"
-
-                    parameters {
-                    string(name: 'URL', defaultValue: 'Jenkins', description: 'Para quem devo dizer olá?')
-                }
-                }
-                steps {
-                    echo "Olá, ${params.URL}, faço implementar a pipeline do Jenkins."
-                }
+               bat 'echo Running unit tests'
         }    
             stage('Deploy') {
                     when {
@@ -54,7 +46,7 @@ pipeline {
                     environment name: 'DEPLOY_TO', value: 'main'
                 }
                 steps {
-                   bat "echo ${DEPLOY_TO}"
+                   bat 'echo ${DEPLOY_TO}'
                 }
             }    
     }
