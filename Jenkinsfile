@@ -19,9 +19,9 @@ pipeline {
         required: true
     }
 
-    // triggers {
-    //     cron('H */4 * * 1-5')
-    // }
+    triggers {
+        cron('*****')
+    }
 
         stages {
             stage('Build') {
