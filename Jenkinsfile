@@ -5,10 +5,12 @@ pipeline {
       GIT_URL = 'https://github.com/kelleao/jenkins'
       CREDS = credentials('USER_TEST')
     }
+
      options {
         buildDiscarder(logRotator(numToKeepStr: '1'))
         timeout(30)
     }
+
      parameters {
         credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', 
         defaultValue: 'USER_LOGIN', 
@@ -20,35 +22,41 @@ pipeline {
     // triggers {
     //     cron('H */4 * * 1-5')
     // }
+
         stages {
             stage('Build') {
                 steps {
                     git branch: 'main', url: "${env.GIT_URL}"
                     echo 'Git URl'
                 }
-        }
-            stage('Parameters credenciais') {
+            }
+                stage('Parameters credenciais') {
                     steps {
                         git branch: 'main', url: "${params.USER_LOGIN}"
                     }
-            }
-            stage('Credenciais my usr e psw') {
-                 bat 'echo meu user ${CREDS_USR}'
-                 bat 'echo minha senha ${CREDS_PSW}'
-            }
-            
-            stage('Test') {
-               bat 'echo Running unit tests'
-        }    
-            stage('Deploy') {
-                    when {
-                    branch 'main'
-                    environment name: 'DEPLOY_TO', value: 'main'
                 }
-                steps {
-                   bat 'echo ${DEPLOY_TO}'
+                stage('Credenciais my usr e psw') {
+                    steps{
+                        bat 'echo meu user ${CREDS_USR}'
+                        bat 'echo minha senha ${CREDS_PSW}'
+                    }
                 }
-            }    
+                
+                stage('Test') {
+                    steps{
+                        bat 'echo Running unit tests'
+                    }
+                }    
+                
+                stage('Deploy') {
+                        when {
+                        branch 'main'
+                        environment name: 'DEPLOY_TO', value: 'main'
+                    }
+                    steps {
+                    bat 'echo ${DEPLOY_TO}'
+                    }
+                }    
     }
 
     post { 
