@@ -39,6 +39,11 @@ pipeline {
                    bat 'whoami'
                 }
         }    
+        stage('Deploy') {
+                steps {
+                   echo "Git"
+                }
+        }    
     }
 
     post { 
