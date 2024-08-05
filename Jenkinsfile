@@ -35,7 +35,7 @@ pipeline {
             }
 
             stage('Test') {
-                input{
+                // input{
                 //     message "Should we continue?"
                 //     ok "Yes, we should."
                 //     submitter "alice,bob"
@@ -43,7 +43,7 @@ pipeline {
                 //     parameters {
                 //     string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
                 // }
-                }
+                // }
                 steps {
                     echo "Hello, nice to meet you."
                 }
