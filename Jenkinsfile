@@ -36,23 +36,27 @@ pipeline {
 
             stage('Test') {
                 input{
-                    message "Should we continue?"
-                    ok "Yes, we should."
-                    submitter "alice,bob"
+                    message "Devemos continuar"
+                    ok "Yes, dever."
+                    submitter "raquel, leao"
 
                     parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                    string(name: 'URL', defaultValue: 'Jenkins', description: 'Para quem devo dizer olá?')
                 }
                 }
                 steps {
-                    echo "Hello, ${PERSON}, nice to meet you."
+                    echo "Olá, ${params.URL}, faço implementar a pipeline do Jenkins."
                 }
         }    
-        stage('Deploy') {
+            stage('Deploy') {
+                    when {
+                    branch 'main'
+                    environment name: 'DEPLOY_TO', value: 'main'
+                }
                 steps {
-                   echo "Git"
+                   bat "echo ${DEPLOY_TO}"
                 }
-        }    
+            }    
     }
 
     post { 
