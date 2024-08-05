@@ -32,7 +32,7 @@ pipeline {
             }
                 stage('Parameters credenciais') {
                     steps {
-                        git branch: 'main', url: "${params.USER_LOGIN}"
+                       bat "echo '${params.USER_LOGIN}'"
                     }
                 }
                 stage('Credenciais my usr e psw') {
@@ -44,7 +44,7 @@ pipeline {
                 
                 stage('Test') {
                     steps{
-                     echo "unit tests"
+                     echo 'unit tests'
                     }
                 }    
                 
@@ -54,7 +54,7 @@ pipeline {
                     //     environment name: 'GIT_URL', value: 'main'
                     // }
                     steps {
-                        echo "Deploy"
+                        echo 'Deploy'
                     }
                 }    
     }
