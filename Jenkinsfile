@@ -13,9 +13,9 @@ pipeline {
         string(name: 'GIT_URL', defaultValue: "https://github.com/kelleao/jenkins.git", , description: 'Acesso do Github URL no branch')
     }
 
-    triggers {
-        cron('H */4 * * 1-5')
-    }
+    // triggers {
+    //     cron('H */4 * * 1-5')
+    // }
         stages {
             stage('Build') {
                 steps {
@@ -35,17 +35,17 @@ pipeline {
             }
 
             stage('Test') {
-                // input{
-                //     message "Should we continue?"
-                //     ok "Yes, we should."
-                //     submitter "alice,bob"
+                input{
+                    message "Should we continue?"
+                    ok "Yes, we should."
+                    submitter "alice,bob"
 
-                //     parameters {
-                //     string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-                // }
-                // }
+                    parameters {
+                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                }
+                }
                 steps {
-                    echo "Hello, nice to meet you."
+                    echo "Hello, ${PERSON}, nice to meet you."
                 }
         }    
         stage('Deploy') {
