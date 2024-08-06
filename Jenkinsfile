@@ -49,12 +49,12 @@ pipeline {
                 }    
                 
                 stage('Deploy') {
-                    //     when {
-                    //     branch 'main'
-                    //     environment name: 'GIT_URL', value: 'main'
-                    // }
+                    when {
+                     branch 'main'
+                     environment name: 'DEPLOY_TO', value: 'main'
+                    }
                     steps {
-                        echo 'Deploy'
+                        echo '${DEPLOY_TO}'
                     }
                 }    
     }
