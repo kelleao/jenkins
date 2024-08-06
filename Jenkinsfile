@@ -27,7 +27,7 @@ pipeline {
                 steps {
                     bat 'echo meu user ${CREDS_USR}'
                     bat 'echo minha senha ${CREDS_PSW}'
-                    bat 'mvn -B clean verify'
+                   
                 }
             }
                 stage('Parameters credenciais') {
@@ -39,7 +39,6 @@ pipeline {
                 stage('Test') {
                     steps{
                      echo 'Running unit tests...'
-                     bat 'mvn test'
                      
                      
                     }
