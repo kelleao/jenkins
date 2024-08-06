@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment { 
-      CREDS = credentials('github-key')
+      CREDS = credentials('USER_LOGIN')
     }
 
      options {
@@ -12,9 +12,9 @@ pipeline {
 
      parameters {
         credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', 
-        defaultValue: 'github-key', 
+        defaultValue: 'USER_LOGIN', 
         description: 'Meu usuario e senha acessa github.', 
-        name: 'github-key', 
+        name: 'USER_LOGIN', 
         required: true
     }
 
@@ -31,7 +31,7 @@ pipeline {
             }
                 stage('Parameters credenciais') {
                     steps {
-                       bat "echo '${params.github-key}'"
+                       bat "echo '${params.USER_LOGIN}'"
                     }
                 }
                 
