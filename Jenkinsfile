@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment { 
-      GIT_URL = 'https://github.com/kelleao/jenkins'
-      CREDS = credentials('USER_LOGIN')
+      CREDS = credentials('github-key')
     }
 
      options {
@@ -13,9 +12,9 @@ pipeline {
 
      parameters {
         credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', 
-        defaultValue: 'USER_LOGIN', 
+        defaultValue: 'github-key', 
         description: 'Meu usuario e senha acessa github.', 
-        name: 'USER_LOGIN', 
+        name: 'github-key', 
         required: true
     }
 
@@ -26,19 +25,13 @@ pipeline {
         stages {
             stage('Build') {
                 steps {
-                    git branch: 'main', url: "${env.GIT_URL}"
-                    echo 'Git URl'
+                    bat 'echo meu user ${CREDS_USR}'
+                    bat 'echo minha senha ${CREDS_PSW}'
                 }
             }
                 stage('Parameters credenciais') {
                     steps {
-                       bat "echo '${params.USER_LOGIN}'"
-                    }
-                }
-                stage('Credenciais my usr e psw') {
-                    steps{
-                        bat 'echo meu user ${CREDS_USR}'
-                        bat 'echo minha senha ${CREDS_PSW}'
+                       bat "echo '${params.github-key}'"
                     }
                 }
                 
