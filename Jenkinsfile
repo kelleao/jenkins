@@ -37,7 +37,8 @@ pipeline {
                 
                 stage('Test') {
                     steps{
-                     echo 'unit tests'
+                     //echo 'Running unit tests...
+                     bat "make test"
                     }
                 }    
                 
