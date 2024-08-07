@@ -32,7 +32,7 @@ pipeline {
             stage('Build') {
                 steps {
 
-                    bat '${env.NEW_VERSION}'
+                    bat '${NEW_VERSION}'
                     
                     // bat 'echo meu user ${CREDS_USR}'
                     // bat 'echo minha senha ${CREDS_PSW}'
