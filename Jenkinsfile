@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment { 
-      CREDS = credentials('USER_LOGIN')
+        NEW_VERSION = '17.0.12'
+        CREDS = credentials('USER_LOGIN')
     }
 
      options {
@@ -10,12 +11,17 @@ pipeline {
         timeout(30)
     }
 
-     parameters {
-        credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', 
-        defaultValue: 'USER_LOGIN', 
-        description: 'Meu usuario e senha acessa github.', 
-        name: 'USER_LOGIN', 
-        required: true
+    //  parameters {
+    //     credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', 
+    //     defaultValue: 'USER_LOGIN', 
+    //     description: 'Meu usuario e senha acessa github.', 
+    //     name: 'USER_LOGIN', 
+    //     required: true
+    // }
+
+    parameters{
+        choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: '')
+        booleanParam(name: 'executeTests', defaultValue: true, description: '')
     }
 
     triggers {
@@ -25,18 +31,26 @@ pipeline {
         stages {
             stage('Build') {
                 steps {
-                    bat 'echo meu user ${CREDS_USR}'
-                    bat 'echo minha senha ${CREDS_PSW}'
+
+                    bat '${env.NEW_VERSION}'
+                    
+                    // bat 'echo meu user ${CREDS_USR}'
+                    // bat 'echo minha senha ${CREDS_PSW}'
                    
                 }
             }
-                stage('Parameters credenciais') {
-                    steps {
-                       bat "echo '${params.USER_LOGIN}'"
-                    }
-                }
+                // stage('Parameters credenciais') {
+                //     steps {
+                //        bat "echo '${params.USER_LOGIN}'"
+                //     }
+                // }
                 
                 stage('Test') {
+                    when{
+                        expression{
+                            params.executeTests
+                        }
+                    }
                     steps{
                      echo 'Running unit tests...'
                      
@@ -45,12 +59,15 @@ pipeline {
                 }    
                 
                 stage('Deploy') {
-                    when {
-                     branch 'main'
-                     environment name: 'DEPLOY_TO', value: 'main'
-                    }
                     steps {
-                        echo '${DEPLOY_TO}'
+                        echo 'deplying the application...'
+                        withCredentials([
+                            usernamePassword(credentials: 'USER_LOGIN', usernameVariable: CREDS_USR, passwordVariable: CREDS_PSW)
+                        ]){
+                            bat "Meu user ${CREDS_USR} minha senha ${CREDS_PSW}"
+                        }
+
+                        echo "deploynig version ${params.VERSION}"
                     }
                 }    
     }
