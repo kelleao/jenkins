@@ -18,7 +18,7 @@ pipeline {
         stages {
             stage('Build') {
                 steps {
-                    echo 'versão ${NEW_VERSION}'
+                    echo "versao ${NEW_VERSION}"
                     
                 }
             }
