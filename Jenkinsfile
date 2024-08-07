@@ -41,7 +41,7 @@ pipeline {
                         withCredentials([
                             usernamePassword(credentialsId: 'USER_LOGIN', usernameVariable: 'CREDS_USR', passwordVariable: 'CREDS_PSW')
                         ]){
-                            bat 'echo ${CREDS_USR} ${CREDS_PSW}'
+                            bat 'echo meu usuario e senha ${CREDS_USR} ${CREDS_PSW}'
                         }
 
                         echo "deploynig version ${params.VERSION}"
