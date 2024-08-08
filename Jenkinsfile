@@ -3,7 +3,7 @@ pipeline {
 
     tools {
          maven 'MAVEN_HOME'
-        jdk 'jdk17'
+        jdk 'JAVA_LOCAL'
     }
     environment { 
         NEW_VERSION = '17.0.12'
