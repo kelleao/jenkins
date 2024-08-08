@@ -29,7 +29,7 @@ pipeline {
                     checkout scm: [
                     $class: 'GitSCM',
                     branches: [[name: "*/${params.BRANCH_NAME}"]],
-                    git([[url: 'https://github.com/kelleao/jenkins.git']])
+                    git: [[url: 'https://github.com/kelleao/jenkins.git']]
                 ]
                 }
             }
