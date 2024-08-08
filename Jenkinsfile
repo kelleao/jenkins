@@ -37,7 +37,7 @@ pipeline {
                         checkout scm: [
                         $class: 'GitSCM',
                         branches: [[name: "*/${params.BRANCH_NAME}"]],
-                        userRemoteConfigs: [[url: 'https://github.com/kelleao/jenkins.git']]
+                        git: [[url: 'https://github.com/kelleao/jenkins.git']]
                     ]
                            
                 }
