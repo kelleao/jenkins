@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-         maven 'MAVEN_HOME'
+        maven 'MAVEN_HOME'
         jdk 'JAVA_LOCAL'
     }
     environment { 
@@ -29,7 +29,7 @@ pipeline {
                     checkout scm: [
                     $class: 'GitSCM',
                     branches: [[name: "*/${params.BRANCH_NAME}"]],
-                    git: [[url: 'https://github.com/kelleao/jenkins.git']]
+                    git([[url: 'https://github.com/kelleao/jenkins.git']])
                 ]
                 }
             }
@@ -37,19 +37,47 @@ pipeline {
                 steps {
                     echo "versao ${NEW_VERSION}" 
                     bat 'mvn --version'     
-                    bat 'java --version' 
+                    bat 'java --version'        
                 }
             }
                 stage('Test') {
                     when{
-                        expression{return params.RUN_TESTS}                         
+                        expression{return params.RUN_TESTS}
+                            
                     }
                     steps{
                      echo 'Running tests...'
-                    
-                     
+                     bat 'make check || true'              
                     }
                 } 
+                stage('parallel test'){
+                    when {
+                        branch 'main'
+                    }
+                     parallel{
+                        
+                    stage('Branch A') {
+                            agent {
+                                label "for-branch-a"
+                            }
+                            steps {
+                                echo "On Branch A"
+                            }
+                        }
+                        stage('Branch B') {
+                            agent {
+                                label "for-branch-b"
+                            }
+                            steps {
+                                echo "On Branch B"
+                            }
+                        }
+                        stage('Branch C') {
+                            agent {
+                                label "for-branch-c"
+                            }
+                        }
+                }
                 stage('Deploy') {
                      when {
                         allOf {
