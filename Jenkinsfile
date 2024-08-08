@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+    tools {
+        maven 'maven'
+        jdk 'jdk17.0.12'
+    }
     environment { 
         NEW_VERSION = '17.0.12'
         CREDS = credentials('USER_LOGIN')
@@ -30,7 +35,9 @@ pipeline {
             }
             stage('Build') {
                 steps {
-                    echo "versao ${NEW_VERSION}"              
+                    echo "versao ${NEW_VERSION}" 
+                    bat 'mvn --version'     
+                    bat 'java --version' 
                 }
             }
                 stage('Test') {
