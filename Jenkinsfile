@@ -98,19 +98,20 @@ pipeline {
                         }
                         
                 }
-        }
+            }
 
-        post { 
-            always {
-            echo "Cleaning up..."  
+            post { 
+                always {
+                echo "Cleaning up..."  
+            }
+                success {
+                    echo 'Build succeeded!'
+                }
+                failure {
+                    echo 'Build failed!'
+                }
+                
         }
-            success {
-                echo 'Build succeeded!'
-            }
-            failure {
-                echo 'Build failed!'
-            }
-            
-     }
+    }
 }
 
