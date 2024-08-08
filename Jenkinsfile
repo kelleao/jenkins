@@ -71,7 +71,7 @@ pipeline {
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
                     }
-                        input message: "Does http://localhost:8888/staging/ look good?"                    
+                        //input message: "Does http://localhost:8888/staging/ look good?"                    
                         steps {
                             echo 'Credential...'
                             withCredentials([
