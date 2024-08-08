@@ -24,7 +24,7 @@ pipeline {
                     checkout scm: [
                     $class: 'GitSCM',
                     branches: [[name: "*/${params.BRANCH_NAME}"]],
-                    userRemoteConfigs: [[url: 'https://github.com/kelleao/jenkins.git']]
+                    git: [[url: 'https://github.com/kelleao/jenkins.git']]
                 ]
                 }
             }
@@ -36,15 +36,9 @@ pipeline {
                 stage('Test') {
                     when{
                         expression{return params.RUN_TESTS}
-                            // branch 'main'
-                            // environment name:'Git', value: 'main'
-                           
-                        
                     }
                     steps{
                      echo 'Running tests...'
-                    
-                     
                     }
                 } 
                 stage('Deploy') {
@@ -64,8 +58,7 @@ pipeline {
 
                             echo "deploynig version ${params.VERSION}"
                             echo "Deploying to ${env.DEPLOY_ENV}..."
-                        }
-                        
+                        }     
                 }
         }
 
