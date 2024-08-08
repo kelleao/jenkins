@@ -21,16 +21,12 @@ pipeline {
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
     }
     triggers {
-        cron('H */4 * * 1-5')
+        cron'* * * * *'
     }
         stages {
             stage('Clone'){
                 steps{
-                    checkout scm: [
-                    $class: 'GitSCM',
-                    branches: [[name: "*/${params.BRANCH_NAME}"]],
-                    git:[[url: 'https://github.com/kelleao/jenkins.git']]
-                ]
+                    git url: 'https://github.com/kelleao/jenkins.git'                
                 }
             }
             stage('Build') {
@@ -56,18 +52,12 @@ pipeline {
                     }
                         parallel{
                             
-                        stage('Branch A') {
-                                agent {
-                                    label "for-branch-a"
-                                }
+                        stage('Branch Github') {
                                 steps {
                                     echo "On Branch A"
                                 }
                             }
-                            stage('Branch B') {
-                                agent {
-                                    label "for-branch-b"
-                                }
+                            stage('Branch Gitlab') {
                                 steps {
                                     echo "On Branch B"
                                 }
@@ -80,9 +70,10 @@ pipeline {
                             expression { return params.BRANCH_NAME == 'main' }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
-                    }                    
+                    }
+                        input message: "Does http://localhost:8888/staging/ look good?"                    
                         steps {
-                            echo 'deplying the application...'
+                            echo 'Credential...'
                             withCredentials([
                                 usernamePassword(credentialsId: 'USER_LOGIN', usernameVariable: 'CREDS_USR', passwordVariable: 'CREDS_PSW')
                             ]){
