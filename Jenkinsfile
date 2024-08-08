@@ -22,7 +22,7 @@ pipeline {
             stage('Clone'){
                 steps{
                     checkout scm: [
-                    git: 'SCM',
+                    $class: 'SCM',
                     branches: [[name: "*/${params.BRANCH_NAME}"]],
                     git: [[url: 'https://github.com/kelleao/jenkins.git']]
                 ]
