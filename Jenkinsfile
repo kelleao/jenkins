@@ -3,6 +3,7 @@ pipeline {
     environment { 
         NEW_VERSION = '17.0.12'
         CREDS = credentials('USER_LOGIN')
+        DEPLOY_ENV = 'staging'
     }
      options {
         buildDiscarder(logRotator(numToKeepStr: '1'))
@@ -10,8 +11,9 @@ pipeline {
         timeout(30)
     }
     parameters{
+        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Branch to build')
         choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: '')
-        booleanParam(name: 'executeTests', defaultValue: true, description: '')
+        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
     }
     triggers {
         cron('H */4 * * 1-5')
@@ -19,7 +21,11 @@ pipeline {
         stages {
             stage('Clone'){
                 steps{
-                    git branch: 'main', url: 'https://github.com/kelleao/jenkins.git'
+                    checkout scm: [
+                    $class: 'GitSCM',
+                    branches: [[name: "*/${params.BRANCH_NAME}"]],
+                    userRemoteConfigs: [[url: 'https://github.com/kelleao/jenkins.git']]
+                ]
                 }
             }
             stage('Build') {
@@ -29,19 +35,25 @@ pipeline {
             }
                 stage('Test') {
                     when{
-                        expression{
-                            branch 'main'
-                            environment name:'Git', value: 'main'
-                            params.executeTests
-                        }
+                        expression{return params.RUN_TESTS}
+                            // branch 'main'
+                            // environment name:'Git', value: 'main'
+                           
+                        
                     }
                     steps{
                      echo 'Running tests...'
-                     echo '${Git}'
+                    
                      
                     }
                 } 
-                stage('Deploy') {                    
+                stage('Deploy') {
+                     when {
+                        allOf {
+                            expression { return params.BRANCH_NAME == 'main' }
+                            expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+                        }
+                    }                    
                         steps {
                             echo 'deplying the application...'
                             withCredentials([
@@ -51,27 +63,23 @@ pipeline {
                             }
 
                             echo "deploynig version ${params.VERSION}"
+                            echo "Deploying to ${env.DEPLOY_ENV}..."
                         }
                         
                 }
         }
 
         post { 
-            always { 
-                echo 'I will always say Hello again!'
-            }
+            always {
+            echo "Cleaning up..."  
+        }
             success {
-                echo 'Only on SUCCESS'
+                echo 'Build succeeded!'
             }
             failure {
-                echo 'Only on Failure'
+                echo 'Build failed!'
             }
-            unstable {
-                echo 'Only if run is unstable'
-            }
-            changed {
-                echo 'Only if status changed from Success to Failure or vice versa w.r.t. last run.'
-            }
+            
      }
 }
 
