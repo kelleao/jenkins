@@ -29,7 +29,7 @@ pipeline {
                     checkout scm: [
                     $class: 'GitSCM',
                     branches: [[name: "*/${params.BRANCH_NAME}"]],
-                    git: [[url: 'https://github.com/kelleao/jenkins.git']]
+                    git:[[url: 'https://github.com/kelleao/jenkins.git']]
                 ]
                 }
             }
@@ -54,29 +54,25 @@ pipeline {
                     when {
                         branch 'main'
                     }
-                     parallel{
-                        
-                    stage('Branch A') {
-                            agent {
-                                label "for-branch-a"
+                        parallel{
+                            
+                        stage('Branch A') {
+                                agent {
+                                    label "for-branch-a"
+                                }
+                                steps {
+                                    echo "On Branch A"
+                                }
                             }
-                            steps {
-                                echo "On Branch A"
+                            stage('Branch B') {
+                                agent {
+                                    label "for-branch-b"
+                                }
+                                steps {
+                                    echo "On Branch B"
+                                }
                             }
-                        }
-                        stage('Branch B') {
-                            agent {
-                                label "for-branch-b"
-                            }
-                            steps {
-                                echo "On Branch B"
-                            }
-                        }
-                        stage('Branch C') {
-                            agent {
-                                label "for-branch-c"
-                            }
-                        }
+                    }
                 }
                 stage('Deploy') {
                      when {
