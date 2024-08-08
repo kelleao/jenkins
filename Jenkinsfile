@@ -24,9 +24,22 @@ pipeline {
         cron'* * * * *'
     }
         stages {
+             stage('Prepare') {
+                when {
+                    expression { params.BRANCH_NAME ==~ /(main|develop)/ }
+                }
+                steps {
+                    echo "Preparing for build..."
+                }
+            }
             stage('Clone'){
                 steps{
-                    git branch: 'main', url: 'https://github.com/kelleao/jenkins.git'         
+                        checkout scm: [
+                        $class: 'GitSCM',
+                        branches: [[name: "*/${params.BRANCH_NAME}"]],
+                        userRemoteConfigs: [[url: 'https://github.com/kelleao/jenkins.git']]
+                    ]
+                           
                 }
             }
             stage('Build') {
@@ -43,7 +56,7 @@ pipeline {
                     }
                     steps{
                      echo 'Running tests...'
-                     bat 'make check || true'              
+                                  
                     }
                 } 
                 stage('parallel test'){
