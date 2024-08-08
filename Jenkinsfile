@@ -1,59 +1,61 @@
 pipeline {
     agent any
-
     environment { 
-      CREDS = credentials('USER_LOGIN')
+        NEW_VERSION = '17.0.12'
+        CREDS = credentials('USER_LOGIN')
     }
-
      options {
         buildDiscarder(logRotator(numToKeepStr: '1'))
+        parallelsAlwaysFailFast()
         timeout(30)
     }
-
-     parameters {
-        credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', 
-        defaultValue: 'USER_LOGIN', 
-        description: 'Meu usuario e senha acessa github.', 
-        name: 'USER_LOGIN', 
-        required: true
+    parameters{
+        choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: '')
+        booleanParam(name: 'executeTests', defaultValue: true, description: '')
     }
-
     triggers {
         cron('H */4 * * 1-5')
     }
-
         stages {
-            stage('Build') {
-                steps {
-                    bat 'echo meu user ${CREDS_USR}'
-                    bat 'echo minha senha ${CREDS_PSW}'
-                   
+            stage('Clone'){
+                steps{
+                    git branch: 'main', url: 'https://github.com/kelleao/jenkins.git'
                 }
             }
-                stage('Parameters credenciais') {
-                    steps {
-                       bat "echo '${params.USER_LOGIN}'"
-                    }
+            stage('Build') {
+                steps {
+                    echo "versao ${NEW_VERSION}"              
                 }
-                
+            }
                 stage('Test') {
+                    when{
+                        
+                        expression{
+                            branch 'main'
+                            environment name: 'Git', value: 'main'
+                            params.executeTests
+                        }
+                    }
                     steps{
-                     echo 'Running unit tests...'
+                     echo 'Running tests...'
+                     echo "${Git}"
                      
-                     
                     }
-                }    
-                
-                stage('Deploy') {
-                    when {
-                     branch 'main'
-                     environment name: 'DEPLOY_TO', value: 'main'
-                    }
-                    steps {
-                        echo '${DEPLOY_TO}'
-                    }
-                }    
-    }
+                } 
+                stage('Deploy') {                    
+                        steps {
+                            echo 'deplying the application...'
+                            withCredentials([
+                                usernamePassword(credentialsId: 'USER_LOGIN', usernameVariable: 'CREDS_USR', passwordVariable: 'CREDS_PSW')
+                            ]){
+                                bat 'echo meu usuario e senha ${CREDS_USR} ${CREDS_PSW}'
+                            }
+
+                            echo "deploynig version ${params.VERSION}"
+                        }
+                        
+                }
+        }
 
         post { 
             always { 
@@ -73,6 +75,8 @@ pipeline {
             }
      }
 }
+
+
    
 
 
