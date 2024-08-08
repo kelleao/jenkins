@@ -29,16 +29,15 @@ pipeline {
             }
                 stage('Test') {
                     when{
-                        
                         expression{
                             branch 'main'
-                            environment name: 'Git', value: 'main'
+                            environment name:'Git', value: 'main'
                             params.executeTests
                         }
                     }
                     steps{
                      echo 'Running tests...'
-                     echo "${Git}"
+                     echo '${Git}'
                      
                     }
                 } 
@@ -75,9 +74,4 @@ pipeline {
             }
      }
 }
-
-
-   
-
-
 
