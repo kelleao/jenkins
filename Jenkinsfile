@@ -35,10 +35,12 @@ pipeline {
             }
                 stage('Test') {
                     when{
-                        expression{return params.RUN_TESTS}
+                        expression{return params.RUN_TESTS}                         
                     }
                     steps{
                      echo 'Running tests...'
+                    
+                     
                     }
                 } 
                 stage('Deploy') {
@@ -58,7 +60,8 @@ pipeline {
 
                             echo "deploynig version ${params.VERSION}"
                             echo "Deploying to ${env.DEPLOY_ENV}..."
-                        }     
+                        }
+                        
                 }
         }
 
