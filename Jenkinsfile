@@ -6,7 +6,7 @@ pipeline {
         jdk 'JAVA_LOCAL'
     }
     environment { 
-        NEW_VERSION = '17.0.12'
+        NEW_VERSION = '17.0.13'
         CREDS = credentials('USER_LOGIN')
         DEPLOY_ENV = 'staging'
     }
