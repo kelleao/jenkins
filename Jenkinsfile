@@ -37,7 +37,7 @@ pipeline {
                     checkout scmGit(branches: [[name: '*/main']], 
                     extensions: [], 
                     userRemoteConfigs: [[credentialsId: 'jenkins_token', 
-                    url: 'https://github.com/kelleao/jenkins.git']])]
+                    url: 'https://github.com/kelleao/jenkins.git']])
                            
                 }
             }
