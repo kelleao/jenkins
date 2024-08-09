@@ -6,9 +6,7 @@ pipeline {
         jdk 'JAVA_LOCAL'
     }
     environment { 
-        NEW_VERSION = '17.0.13'
         CREDS = credentials('USER_LOGIN')
-        DEPLOY_ENV = 'staging'
     }
      options {
         buildDiscarder(logRotator(numToKeepStr: '1'))
@@ -24,14 +22,6 @@ pipeline {
         cron'* * * * *'
     }
         stages {
-             stage('Prepare') {
-                when {
-                    expression { params.BRANCH_NAME ==~ /(main|develop)/ }
-                }
-                steps {
-                    echo "Preparing for build..."
-                }
-            }
             stage('Clone'){
                 steps{
                     checkout scmGit(branches: [[name: '*/main']], 
@@ -42,6 +32,9 @@ pipeline {
                 }
             }
             stage('Build') {
+                environment{
+                    NEW_VERSION = '17.0.12'
+                }
                 steps {
                     echo "versao ${NEW_VERSION}" 
                     bat 'mvn --version'     
@@ -82,8 +75,7 @@ pipeline {
                             expression { return params.BRANCH_NAME == 'main' }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
-                    }
-                        //input message: "Does http://localhost:8888/staging/ look good?"                    
+                    }          
                         steps {
                             echo 'Credential...'
                             withCredentials([
@@ -91,11 +83,8 @@ pipeline {
                             ]){
                                 bat 'echo meu usuario e senha ${CREDS_USR} ${CREDS_PSW}'
                             }
-
                             echo "deploynig version ${params.VERSION}"
-                            echo "Deploying to ${env.DEPLOY_ENV}..."
                         }
-                        
                 }
             }
 
@@ -108,7 +97,7 @@ pipeline {
                 }
                 failure {
                     echo 'Build failed!'
-                }
+             }
                 
         }
     }
