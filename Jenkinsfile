@@ -34,11 +34,10 @@ pipeline {
             }
             stage('Clone'){
                 steps{
-                        checkout scm: [
-                        $class: 'GitSCM',
-                        branches: [[name: "*/${params.BRANCH_NAME}"]],
-                        git: [[url: 'https://github.com/kelleao/jenkins.git']]
-                    ]
+                    checkout scmGit(branches: [[name: '*/main']], 
+                    extensions: [], 
+                    userRemoteConfigs: [[credentialsId: 'jenkins_token', 
+                    url: 'https://github.com/kelleao/jenkins.git']])]
                            
                 }
             }
