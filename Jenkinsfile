@@ -73,7 +73,7 @@ pipeline {
                 stage('Deploy') {
                      when {
                         allOf {
-                            expression { ${NEW_VERSION} }
+                            expression { ${return params.VERSION} }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
                     }
@@ -87,7 +87,7 @@ pipeline {
                             }
 
                             echo "deploynig version ${params.VERSION}"
-                            echo "Nova versão ${NEW_VERSION}"
+                            //echo "Nova versão ${NEW_VERSION}"
                             
                         }
                         
