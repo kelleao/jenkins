@@ -48,24 +48,24 @@ pipeline {
                                   
                 }
             } 
-            stage('parallel test'){
+            stage('Versoes'){
                     parallel{
-                        stage('Versoes') {
+                        stage('Git') {
                             steps {
                                 bat 'git --version'
-                                echo "Git versão"
+                                echo "Git versao"
                             }
                         }
                         stage('Java') {
                             steps {
                                 bat 'java --version' 
-                                echo "Java versão"       
+                                echo "Java versao"       
                             }
                         }
                         stage('Maven') {
                             steps {
                                 bat 'mvn --version' 
-                                echo "Maven versão"       
+                                echo "Maven versao"       
                                 }
                         }
                     }
