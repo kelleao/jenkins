@@ -47,24 +47,24 @@ pipeline {
                                   
                 }
             } 
-            stage('Versões'){
+            stage('Versoes'){
                     parallel{
                         stage('Git') {
                             steps {
                                 bat 'git --version'
-                                echo "Git versão"
+                                echo "Git versao"
                             }
                         }
                         stage('Java') {
                             steps {
                                 bat 'java --version' 
-                                echo "Java versão"       
+                                echo "Java versao"       
                             }
                         }
                         stage('Maven') {
                             steps {
                                 bat 'mvn --version' 
-                                echo "Maven versão"       
+                                echo "Maven versao"       
                                 }
                         }
                     }
@@ -73,7 +73,7 @@ pipeline {
                 stage('Deploy') {
                      when {
                         allOf {
-                            expression {return ${NEW_VERSION} }
+                            expression { ${NEW_VERSION} }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
                     }
