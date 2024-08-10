@@ -14,7 +14,7 @@ pipeline {
         timeout(30)
     }
     parameters{
-        string(name: 'BRANCHE', defaultValue: 'main', description: '')
+         string(defaultValue: 'main', description: 'Git branch main', name: 'BRANCH_NAME')
         choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: 'Atualiza os versões')
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
     }
@@ -74,7 +74,7 @@ pipeline {
                 stage('Deploy') {
                      when {
                         allOf {
-                             expression { ${return params.BRANCHE} }
+                             expression { ${return params.BRANCH_NAME} }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
                     }
