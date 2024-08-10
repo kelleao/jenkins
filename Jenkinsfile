@@ -31,7 +31,7 @@ pipeline {
                 }
                 steps {
                     echo "versao ${NEW_VERSION}" 
-                    bat 'git "C:\Program Files\Git\cmd\git.exe"'
+                    
                 }
             }
             stage('Test') {
