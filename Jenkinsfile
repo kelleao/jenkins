@@ -35,7 +35,7 @@ pipeline {
                 }
                 steps {
                     bat "echo versao ${NEW_VERSION}" 
-                    PATH= '%JAVA_HOME%\bin'
+                    bat PATH= '%JAVA_HOME%\bin'
                     echo "${env.PATH}"
                     //env.JAVA_HOME="${tool 'jdk17'}"
                     //env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
@@ -80,9 +80,6 @@ pipeline {
                             expression {return ${NEW_VERSION} }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
-                    }
-                    when { 
-                        branch 'main' || not { branch 'master' }
                     }
                                
                         steps {
