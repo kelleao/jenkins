@@ -73,7 +73,7 @@ pipeline {
                 stage('Deploy') {
                      when {
                         allOf {
-                            expression { ${return params.VERSION} }
+                            expression { ${return params.NEW_VERSION} }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
                     }
