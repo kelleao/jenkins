@@ -74,7 +74,7 @@ pipeline {
                 stage('Deploy') {
                      when {
                         allOf {
-                             expression { ${ return params.BRANCHE branch 'main' } }
+                             expression { ${return params.BRANCHE} }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
                     }
