@@ -67,11 +67,10 @@ pipeline {
 
                 stage('Matrix') {
                     matrix {
-                        agent any
                         axes { 
                             axis {
                                 name 'GIT'
-                                values 'init', 'add', 'commit'
+                                values 'init', 'status', 'commit'
                             }
                             axis {
                                 name 'VERSAO'
