@@ -1,10 +1,5 @@
 pipeline {
-    agent any
-
-    tools {
-        maven 'MAVEN_HOME'
-        jdk 'JAVA_LOCAL'
-    }
+    agent any 
     environment { 
         CREDS = credentials('USER_LOGIN')
     }
