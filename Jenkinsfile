@@ -65,21 +65,23 @@ pipeline {
                     }
                 }
 
-                stage('Matrix') {
-                    matrix {
+                matrix {
                         axes { 
                             axis {
                                 name 'GIT'
                                 values 'init', 'status', 'commit'
                             }
                             axis {
-                                name 'VERSAO'
-                                values 'JAVA', 'MAVEN'
+                                name 'JAVA'
+                                values 'java'
+                            }
+                            axis {
+                                name 'MAVEN'
+                                values 'mvn'
                             }
                         }
                         
                     }
-                }
                 
                 stage('Deploy') {
                      when {
