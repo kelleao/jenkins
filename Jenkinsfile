@@ -80,7 +80,7 @@ pipeline {
                             }
 
                             echo "deploynig version ${params.VERSION}"
-                            echo "Nova versão ${NEW_VERSION}"
+                            
                             
                         }
                 }
