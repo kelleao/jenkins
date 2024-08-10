@@ -37,39 +37,40 @@ pipeline {
                 steps {
                     echo "versao ${NEW_VERSION}" 
                 }
-                stage('Test') {
-                    when{
-                        expression{return params.RUN_TESTS}
+            }
+            stage('Test') {
+                when{
+                    expression{return params.RUN_TESTS}
                             
-                    }
-                    steps{
-                     echo "Running tests${params.RUN_TESTS}..."
+                }
+                steps{
+                    echo "Running tests${params.RUN_TESTS}..."
                                   
-                    }
-                } 
-                stage('parallel test'){
-                        parallel{
-                            stage('Versoes') {
-                                steps {
-                                    bat 'git --version'
-                                    echo "Git versão"
-                                }
+                }
+            } 
+            stage('parallel test'){
+                    parallel{
+                        stage('Versoes') {
+                            steps {
+                                bat 'git --version'
+                                echo "Git versão"
                             }
-                            stage('Java') {
-                                steps {
-                                    bat 'java --version' 
-                                    echo "Java versão"       
-                                }
+                        }
+                        stage('Java') {
+                            steps {
+                                bat 'java --version' 
+                                echo "Java versão"       
                             }
-                            stage('Maven') {
-                                steps {
+                        }
+                        stage('Maven') {
+                            steps {
                                 bat 'mvn --version' 
                                 echo "Maven versão"       
                                 }
-                            }
                         }
                     }
                 }
+                
                 stage('Deploy') {
                      when {
                         allOf {
