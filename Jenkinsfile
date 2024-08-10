@@ -69,18 +69,6 @@ pipeline {
                             }
                     }
                 }
-            stage('Entra usuario') {
-                    input{
-                        message "Castrado acesso login"
-                        ok "Sim!"
-                        parameters {
-                        string(name: 'ACESSO', description: 'Começa novo seu repositorio')
-                        }
-                    }
-                    steps { 
-                        echo "Faço treinando da jenkins ${params.ACESSO}." 
-                    }
-                }
                 stage('Deploy') {
                      when {
                         allOf {
