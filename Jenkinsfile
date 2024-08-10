@@ -35,7 +35,6 @@ pipeline {
                 }
                 steps {
                     bat "echo versao ${NEW_VERSION}" 
-                    bat 'env | grep -e PATH -e JAVA_HOME which java'
                 }
             }
             stage('Test') {
