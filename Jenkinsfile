@@ -14,6 +14,7 @@ pipeline {
         timeout(30)
     }
     parameters{
+        string(name: 'BRANCHE', defaultValue: 'main', description: '')
         choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: 'Atualiza os versões')
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
     }
@@ -73,7 +74,7 @@ pipeline {
                 stage('Deploy') {
                      when {
                         allOf {
-                            expression { ${return params.NEW_VERSION} }
+                             expression { ${ return params.BRANCHE branch 'main' } }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
                     }
@@ -87,7 +88,7 @@ pipeline {
                             }
 
                             echo "deploynig version ${params.VERSION}"
-                            //echo "Nova versão ${NEW_VERSION}"
+                            echo "Nova versão ${NEW_VERSION}"
                             
                         }
                         
