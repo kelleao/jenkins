@@ -9,13 +9,13 @@ pipeline {
         CREDS = credentials('USER_LOGIN')
     }
      options {
-        buildDiscarder(logRotator(numToKeepStr: '1'))
+        buildDiscarder(logRotator(numToKeepStr: '5'))
         parallelsAlwaysFailFast()
         timeout(30)
     }
     parameters{
-        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Branch to build')
-        choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: '')
+        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch main do arquivo jenkins')
+        choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: 'Atualiza os versões')
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
     }
     triggers {
@@ -24,8 +24,7 @@ pipeline {
         stages {
             stage('Clone'){
                 steps{
-                    checkout scmGit(branches: [[name: '*/main']], 
-                    extensions: [], 
+                    checkout scmGit(branches: [[name: '*/main']],  
                     userRemoteConfigs: [[credentialsId: 'jenkins_token', 
                     url: 'https://github.com/kelleao/jenkins.git']])
                            
@@ -37,36 +36,38 @@ pipeline {
                 }
                 steps {
                     echo "versao ${NEW_VERSION}" 
-                    bat 'mvn --version'     
-                    bat 'java --version'        
                 }
-            }
                 stage('Test') {
                     when{
                         expression{return params.RUN_TESTS}
                             
                     }
                     steps{
-                     echo 'Running tests...'
+                     echo "Running tests${params.RUN_TESTS}..."
                                   
                     }
                 } 
                 stage('parallel test'){
-                    when {
-                        branch 'main'
-                    }
                         parallel{
-                            
-                        stage('Branch Github') {
+                            stage('Versoes') {
                                 steps {
-                                    echo "On Branch A"
+                                    bat 'git --version'
+                                    echo "Git versão"
                                 }
                             }
-                            stage('Branch Gitlab') {
+                            stage('Java') {
                                 steps {
-                                    echo "On Branch B"
+                                    bat 'java --version' 
+                                    echo "Java versão"       
                                 }
                             }
+                            stage('Maven') {
+                                steps {
+                                bat 'mvn --version' 
+                                echo "Maven versão"       
+                                }
+                            }
+                        }
                     }
                 }
                 stage('Deploy') {
@@ -83,11 +84,13 @@ pipeline {
                             ]){
                                 bat 'echo meu usuario e senha ${CREDS_USR} ${CREDS_PSW}'
                             }
+
                             echo "deploynig version ${params.VERSION}"
+                            
                         }
+                        
                 }
             }
-
             post { 
                 always {
                 echo "Cleaning up..."  
@@ -97,8 +100,7 @@ pipeline {
                 }
                 failure {
                     echo 'Build failed!'
-             }
-                
+                }                
         }
     }
 
