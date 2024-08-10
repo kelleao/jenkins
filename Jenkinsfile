@@ -71,7 +71,7 @@ pipeline {
                         axes { 
                             axis {
                                 name 'GIT'
-                                values 'Questão1', 'Questão2', 'Questão3'
+                                values 'init', 'add', 'commit'
                             }
                             axis {
                                 name 'VERSAO'
@@ -85,7 +85,7 @@ pipeline {
                 stage('Deploy') {
                      when {
                         allOf {
-                            expression { return ${NEW_VERSION} = 'Novo versão' }
+                            expression { return ${NEW_VERSION}}
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
                     }          
