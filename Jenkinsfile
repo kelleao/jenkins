@@ -10,10 +10,10 @@ pipeline {
     }
      options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
-        parallelsAlwaysFailFast()
         timeout(30)
     }
     parameters{
+        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch main acesso seu no repotório')
         choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: 'Atualiza os versões')
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
     }
@@ -23,7 +23,7 @@ pipeline {
         stages {
             stage('Clone'){
                 steps{
-                    checkout scmGit(branches: [[name: '*/main']],  
+                    checkout scmGit(branches: [[name: "*/${params.BRANCH_NAME}"]],  
                     userRemoteConfigs: [[credentialsId: 'jenkins_token', 
                     url: 'https://github.com/kelleao/jenkins.git']])
                            
@@ -31,10 +31,11 @@ pipeline {
             }
             stage('Build') {
                 environment{
-                    NEW_VERSION = '17.0.12'                    
+                    NEW_VERSION = '17.0.12' 
+                              
                 }
                 steps {
-                    bat "echo versao ${NEW_VERSION}" 
+                    bat "echo versao ${NEW_VERSION}"                  
                 }
             }
             stage('Test') {
@@ -71,16 +72,20 @@ pipeline {
                 }
                 
             stage('Deploy') {
-                    steps {
-                        echo 'Credential...'
-                        withCredentials([
-                            usernamePassword(credentialsId: 'USER_LOGIN', usernameVariable: 'CREDS_USR', passwordVariable: 'CREDS_PSW')])
-                            {
-                                bat 'echo meu usuario e senha ${CREDS_USR} ${CREDS_PSW}'
-                            }
-
+                    when {
+                    allOf {
+                        expression { return params.BRANCH_NAME == 'main' }
+                        expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+                    }
+                }
+                steps {
+                    echo 'Credential...'
+                    withCredentials([
+                        usernamePassword(credentialsId: 'USER_LOGIN', usernameVariable: 'CREDS_USR', passwordVariable: 'CREDS_PSW')])
+                        {
+                            bat 'echo meu usuario e senha ${CREDS_USR} ${CREDS_PSW}'
+                        }
                             echo "deploynig version ${params.VERSION}"
-                            
                             
                         }
                 }
