@@ -86,6 +86,7 @@ pipeline {
                             bat 'echo meu usuario e senha ${CREDS_USR} ${CREDS_PSW}'
                         }
                             echo "deploynig version ${params.VERSION}"
+                            echo "O desenvolvedor escolharia main ou maste: ${params.BRANCH_NAME}"
                             
                         }
                 }
