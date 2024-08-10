@@ -64,24 +64,6 @@ pipeline {
                         }
                     }
                 }
-
-                matrix {
-                        axes { 
-                            axis {
-                                name 'GIT'
-                                values 'init', 'status', 'commit'
-                            }
-                            axis {
-                                name 'JAVA'
-                                values 'java'
-                            }
-                            axis {
-                                name 'MAVEN'
-                                values 'mvn'
-                            }
-                        }
-                        
-                    }
                 
                 stage('Deploy') {
                      when {
@@ -115,6 +97,25 @@ pipeline {
                     echo 'Build failed!'
                 }                
         }
+
+        matrix {
+            axes { 
+                axis {
+                    name 'GIT'
+                    values 'init', 'status', 'commit'
+                }
+                axis {
+                    name 'JAVA'
+                    values ''
+                }
+                axis {
+                    name 'MAVEN'
+                    values 'mvn'
+                    }
+                }
+                        
+        }
+                
     }
 
 
