@@ -70,12 +70,12 @@ pipeline {
                     }
                 }
                 
-                stage('Deploy') {
-                      steps {
-                            echo 'Credential...'
-                            withCredentials([
-                                usernamePassword(credentialsId: 'USER_LOGIN', usernameVariable: 'CREDS_USR', passwordVariable: 'CREDS_PSW')
-                            ]){
+            stage('Deploy') {
+                    steps {
+                        echo 'Credential...'
+                        withCredentials([
+                            usernamePassword(credentialsId: 'USER_LOGIN', usernameVariable: 'CREDS_USR', passwordVariable: 'CREDS_PSW')])
+                            {
                                 bat 'echo meu usuario e senha ${CREDS_USR} ${CREDS_PSW}'
                             }
 
@@ -83,7 +83,6 @@ pipeline {
                             echo "Nova versão ${NEW_VERSION}"
                             
                         }
-                        
                 }
             }
             post { 
@@ -97,25 +96,7 @@ pipeline {
                     echo 'Build failed!'
                 }                
         }
-
-        // matrix {
-        //     axes { 
-        //         axis {
-        //             name 'GIT'
-        //             values 'init', 'status', 'commit'
-        //         }
-        //         axis {
-        //             name 'JAVA'
-        //             values ''
-        //         }
-        //         axis {
-        //             name 'MAVEN'
-        //             values 'mvn'
-        //             }
-        //         }
-                        
-        //  }
                 
-    }
+}
 
 
