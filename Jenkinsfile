@@ -28,6 +28,7 @@ pipeline {
             stage('Build') {
                 environment{
                     NEW_VERSION = '17.0.12'
+                    bat 'git clone %REPO%'
                 }
                 steps {
                     echo "versao ${NEW_VERSION}" 
