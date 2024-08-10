@@ -35,8 +35,6 @@ pipeline {
                 }
                 steps {
                     bat "echo versao ${NEW_VERSION}" 
-                    env.JAVA_HOME="${tool 'jdk17'}"
-                    env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
                 }
             }
             stage('Test') {
