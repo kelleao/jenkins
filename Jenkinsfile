@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent any
     environment { 
         CREDS = credentials('USER_LOGIN')
     }
@@ -9,7 +9,6 @@ pipeline {
         timeout(30)
     }
     parameters{
-        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git branch main do arquivo jenkins')
         choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: 'Atualiza os versões')
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
     }
@@ -27,11 +26,10 @@ pipeline {
             }
             stage('Build') {
                 environment{
-                    NEW_VERSION = '17.0.12'
+                    NEW_VERSION = '17.0.12'                    
                 }
                 steps {
-                    echo "versao ${NEW_VERSION}" 
-                    
+                    bat "echo versao ${NEW_VERSION}" 
                 }
             }
             stage('Test') {
@@ -44,33 +42,50 @@ pipeline {
                                   
                 }
             } 
-            stage('Versoes'){
+            stage('Versões'){
                     parallel{
                         stage('Git') {
                             steps {
                                 bat 'git --version'
-                                echo "Git versao"
+                                echo "Git versão"
                             }
                         }
                         stage('Java') {
                             steps {
                                 bat 'java --version' 
-                                echo "Java versao"       
+                                echo "Java versão"       
                             }
                         }
                         stage('Maven') {
                             steps {
                                 bat 'mvn --version' 
-                                echo "Maven versao"       
+                                echo "Maven versão"       
                                 }
                         }
+                    }
+                }
+
+                stage('Matrix') {
+                    matrix {
+                        agent any
+                        axes { 
+                            axis {
+                                name 'GIT'
+                                values 'Questão1', 'Questão2', 'Questão3'
+                            }
+                            axis {
+                                name 'VERSAO'
+                                values 'JAVA', 'MAVEN'
+                            }
+                        }
+                        
                     }
                 }
                 
                 stage('Deploy') {
                      when {
                         allOf {
-                            expression { return params.BRANCH_NAME == 'main' }
+                            expression { return ${NEW_VERSION} = 'Novo versão' }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
                     }          
