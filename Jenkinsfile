@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+    tools {
+        maven 'MAVEN_HOME'
+        jdk 'JAVA_LOCAL'
+    }
     environment { 
         CREDS = credentials('USER_LOGIN')
     }
@@ -30,6 +35,10 @@ pipeline {
                 }
                 steps {
                     bat "echo versao ${NEW_VERSION}" 
+                    PATH= '%JAVA_HOME%\bin'
+                    echo "${env.PATH}"
+                    //env.JAVA_HOME="${tool 'jdk17'}"
+                    //env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
                 }
             }
             stage('Test') {
@@ -68,10 +77,14 @@ pipeline {
                 stage('Deploy') {
                      when {
                         allOf {
-                            expression { return ${NEW_VERSION}}
+                            expression {return ${NEW_VERSION} }
                             expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
                         }
-                    }          
+                    }
+                    when { 
+                        branch 'main' || not { branch 'master' }
+                    }
+                               
                         steps {
                             echo 'Credential...'
                             withCredentials([
@@ -98,23 +111,23 @@ pipeline {
                 }                
         }
 
-        matrix {
-            axes { 
-                axis {
-                    name 'GIT'
-                    values 'init', 'status', 'commit'
-                }
-                axis {
-                    name 'JAVA'
-                    values ''
-                }
-                axis {
-                    name 'MAVEN'
-                    values 'mvn'
-                    }
-                }
+        // matrix {
+        //     axes { 
+        //         axis {
+        //             name 'GIT'
+        //             values 'init', 'status', 'commit'
+        //         }
+        //         axis {
+        //             name 'JAVA'
+        //             values ''
+        //         }
+        //         axis {
+        //             name 'MAVEN'
+        //             values 'mvn'
+        //             }
+        //         }
                         
-        }
+        //  }
                 
     }
 
