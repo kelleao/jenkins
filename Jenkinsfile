@@ -14,7 +14,6 @@ pipeline {
         timeout(30)
     }
     parameters{
-         string(defaultValue: 'main', description: 'Git branch main', name: 'BRANCH_NAME')
         choice(name: 'VERSION', choices: ['17.0.13', '17.0.14', '17.0.15', '17.0.16'], description: 'Atualiza os versões')
         booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
     }
@@ -36,6 +35,7 @@ pipeline {
                 }
                 steps {
                     bat "echo versao ${NEW_VERSION}" 
+                    bat 'env | grep -e PATH -e JAVA_HOME which java'
                 }
             }
             stage('Test') {
@@ -72,14 +72,7 @@ pipeline {
                 }
                 
                 stage('Deploy') {
-                     when {
-                        allOf {
-                             expression { ${return params.BRANCH_NAME} }
-                            expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-                        }
-                    }
-                               
-                        steps {
+                      steps {
                             echo 'Credential...'
                             withCredentials([
                                 usernamePassword(credentialsId: 'USER_LOGIN', usernameVariable: 'CREDS_USR', passwordVariable: 'CREDS_PSW')
